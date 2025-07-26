@@ -13,7 +13,7 @@ const useFetchCountries = () => {
       const query = `
         query {
           boards(ids: 9671493720) {
-            items_page (limit: 1) {
+            items_page (limit: 500) {
               cursor
               items {
                 id
