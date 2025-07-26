@@ -1,0 +1,45 @@
+import { useQuery } from '@tanstack/react-query';
+import mondaySdk from 'monday-sdk-js';
+import useFlatItems from '../../hooks/useFlatItems';
+
+const monday = mondaySdk();
+
+const useFetchCountries = () => {
+  const { flattenItems } = useFlatItems();
+
+  return useQuery<Country[]>({
+    queryKey: ['countries'],
+    queryFn: async () => {
+      const query = `
+        query {
+          boards(ids: 9671493720) {
+            items_page (limit: 1) {
+              cursor
+              items {
+                id
+                name
+                created_at
+                column_values {
+                  id
+                  text
+                }
+                column_values_str
+              }
+            }
+          }
+        }
+      `;
+
+      const res = await monday.api(query);
+      const items = res.data.boards[0].items_page.items as Item[];
+
+      if (!items) return [];
+
+      const flatItems = flattenItems(items);
+
+      return flatItems as Country[];
+    },
+  });
+};
+
+export default useFetchCountries;
