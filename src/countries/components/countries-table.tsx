@@ -45,21 +45,18 @@ const CountriesTable = () => {
 
   return (
     <>
-      <Flex
-        align="center"
-        justify="space-between"
-        // style={{ padding: 'var(--spacing-medium)' }}
-      >
+      <Flex align="center" justify="space-between">
         <Heading>Monday.com App</Heading>
 
         <Box
           style={{
-            maxWidth: '30rem',
+            width: '100%',
+            maxWidth: '16rem',
           }}
         >
           <Search
             size="small"
-            placeholder="Search by country name"
+            placeholder="Search"
             value={searchValue}
             onChange={(e) => setSearchValue(e)}
           />

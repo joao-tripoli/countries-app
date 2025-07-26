@@ -4,20 +4,50 @@ import useFlatItems from '../../hooks/useFlatItems';
 
 const monday = mondaySdk();
 
-// type Params = {};
+// function buildQueryParams(columns: string[], search: string) {
+//   return {
+//     operator: 'or',
+//     rules: columns.map((columnId) => ({
+//       column_id: columnId,
+//       operator: 'contains_text',
+//       compare_value: [search],
+//     })),
+//   };
+// }
 
-const useFetchCountries = (nameFilter: string) => {
+const useFetchCountries = (filter: string) => {
   const { flattenItems } = useFlatItems();
 
+  // const queryParams = buildQueryParams(['name', 'region', 'subregion'], filter);
+
   return useQuery<Country[]>({
-    queryKey: ['countries', nameFilter],
+    queryKey: ['countries', filter],
     queryFn: async () => {
       const query = `
         query {
           boards(ids: 9671493720) {
             items_page(limit: 500${
-              nameFilter.length
-                ? `, query_params: {operator: and, rules: [{column_id: "name", operator: contains_text, compare_value: ["${nameFilter}"]}]}`
+              filter.length
+                ? `, query_params: {
+                      operator: or,
+                        rules: [
+                        {
+                          column_id: "name",
+                          operator: contains_text,
+                          compare_value: ["${filter}"]
+                        },
+                        {
+                          column_id: "region",
+                          operator: contains_terms,
+                          compare_value: ["${filter}"]
+                        },
+                        {
+                          column_id: "subregion",
+                          operator: contains_terms,
+                          compare_value: ["${filter}"]
+                        },
+                        ]
+                      }`
                 : ''
             }) {
               cursor
