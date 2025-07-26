@@ -4,26 +4,31 @@ import useFlatItems from '../../hooks/useFlatItems';
 
 const monday = mondaySdk();
 
-const useFetchCountries = () => {
+// type Params = {};
+
+const useFetchCountries = (nameFilter: string) => {
   const { flattenItems } = useFlatItems();
 
   return useQuery<Country[]>({
-    queryKey: ['countries'],
+    queryKey: ['countries', nameFilter],
     queryFn: async () => {
       const query = `
         query {
           boards(ids: 9671493720) {
-            items_page (limit: 500) {
+            items_page(limit: 500${
+              nameFilter.length
+                ? `, query_params: {operator: and, rules: [{column_id: "name", operator: contains_text, compare_value: ["${nameFilter}"]}]}`
+                : ''
+            }) {
               cursor
               items {
                 id
                 name
                 created_at
-                column_values {
+                column_values  {
                   id
                   text
                 }
-                column_values_str
               }
             }
           }

@@ -18,13 +18,13 @@ import WeatherModal from './WeatherModal';
 const columns: TableColumn[] = [
   {
     id: 'name',
-    title: 'Name',
+    title: 'Country',
     loadingStateType: 'long-text',
   },
   {
     id: 'region',
     title: 'Region',
-    loadingStateType: 'long-text',
+    loadingStateType: 'medium-text',
   },
   {
     id: 'subregion',
@@ -35,8 +35,9 @@ const columns: TableColumn[] = [
 
 const CountriesTable = () => {
   const [selectedCountryName, setSelectedCountryName] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
-  const { data, isLoading } = useFetchCountries();
+  const { data, isLoading } = useFetchCountries(searchValue);
 
   const handleRowClick = (row: Country) => {
     setSelectedCountryName(row.name);
@@ -53,10 +54,15 @@ const CountriesTable = () => {
 
         <Box
           style={{
-            maxWidth: '500px',
+            maxWidth: '30rem',
           }}
         >
-          <Search size="small" placeholder="Placeholder text here" />
+          <Search
+            size="small"
+            placeholder="Search by country name"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e)}
+          />
         </Box>
       </Flex>
 
@@ -116,7 +122,7 @@ const CountriesTable = () => {
         <WeatherModal
           show={Boolean(selectedCountryName !== '')}
           onClose={() => setSelectedCountryName('')}
-          region={selectedCountryName}
+          location={selectedCountryName}
         />
       </Box>
     </>

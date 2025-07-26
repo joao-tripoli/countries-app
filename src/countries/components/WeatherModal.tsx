@@ -6,27 +6,33 @@ import {
   ModalHeader,
   type ModalProps,
 } from '@vibe/core/next';
+import { useEffect } from 'react';
+import { useWeather } from '../hooks/useFetchCountryWeather';
 
 type Props = Omit<ModalProps, 'children' | 'id'> & {
-  region: string;
+  location: string;
 };
 
 const WeatherModal = (props: Props) => {
-  const { region, ...modalProps } = props;
+  const { location, ...modalProps } = props;
+
+  const { data } = useWeather(location);
+
+  useEffect(() => {
+    if (data) console.log(data);
+  }, [data]);
 
   return (
     <Modal id="weather-modal" size="medium" {...modalProps}>
       <ModalBasicLayout>
         <ModalHeader
           // description={<Text type="text1">{region}</Text>}
-          title={region}
+          title={location}
         />
 
         <ModalContent>
           <Text align="inherit" element="p" type="text1">
-            Modal content will appear here, you can custom it however you want,
-            according to the user needs. Please make sure that the content is
-            clear for completing the relevant task.
+            {data?.current.temp_c}°C / {data?.current.temp_f}°F
           </Text>
         </ModalContent>
       </ModalBasicLayout>
