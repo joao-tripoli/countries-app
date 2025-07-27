@@ -1,5 +1,5 @@
 import { Box } from '@vibe/core';
-import CountriesTable from './components/countries-table';
+import CountriesTable from './components/CountriesTable';
 
 const CountriesPage = () => {
   return (
