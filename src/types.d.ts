@@ -42,7 +42,11 @@ declare type CurrentWeather = {
     last_updated: string;
     temp_c: number;
     temp_f: number;
-    is_day: number;
+    wind_mph: number;
+    wind_kph: number;
+    humidity: number;
+    feelslike_c: number;
+    feelslike_f: number;
     condition: {
       text: string;
       icon: string;
@@ -50,3 +54,5 @@ declare type CurrentWeather = {
     };
   };
 };
+
+declare type TemperatureUnit = 'c' | 'f';

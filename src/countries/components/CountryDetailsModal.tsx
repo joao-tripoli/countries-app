@@ -4,6 +4,7 @@ import {
   Box,
   ButtonGroup,
   Flex,
+  Skeleton,
   Text,
 } from '@vibe/core';
 import {
@@ -15,6 +16,7 @@ import {
 } from '@vibe/core/next';
 import { useState } from 'react';
 
+import dayjs from 'dayjs';
 import useFormat from '../../hooks/useFormat';
 import { useWeather } from '../hooks/useFetchCountryWeather';
 
@@ -25,12 +27,12 @@ type Props = Omit<ModalProps, 'children' | 'id'> & {
 const CountryDetailsModal = (props: Props) => {
   const { country, ...modalProps } = props;
 
-  const [tempUnit, setTempUnit] = useState<'c' | 'f'>('c');
+  const [tempUnit, setTempUnit] = useState<TemperatureUnit>('c');
 
-  const { data: weather } = useWeather(country?.name ?? '');
+  const { data: weather, isLoading } = useWeather(country?.name ?? '');
 
   return (
-    <Modal id="weather-modal" size="medium" {...modalProps}>
+    <Modal id="weather-modal" size="large" {...modalProps}>
       <ModalBasicLayout>
         <ModalHeader
           title={country?.name}
@@ -43,7 +45,7 @@ const CountryDetailsModal = (props: Props) => {
           <Flex justify="end">
             <ButtonGroup
               value={tempUnit}
-              onSelect={(value) => setTempUnit(value as 'c' | 'f')}
+              onSelect={(value) => setTempUnit(value as TemperatureUnit)}
               options={[
                 {
                   text: '°C',
@@ -58,36 +60,40 @@ const CountryDetailsModal = (props: Props) => {
           </Flex>
 
           <Flex align="center" justify="center">
-            <Text
-              align="inherit"
-              element="p"
-              weight="bold"
-              style={{ fontSize: '4rem' }}
-            >
-              {tempUnit === 'c'
-                ? weather?.current.temp_c
-                : weather?.current.temp_f}
-              °{tempUnit.toUpperCase()}
-            </Text>
+            {isLoading ? (
+              <Skeleton width={200} height={64} />
+            ) : (
+              <>
+                <Text
+                  align="inherit"
+                  element="p"
+                  weight="bold"
+                  style={{ fontSize: '4rem' }}
+                >
+                  {tempUnit === 'c'
+                    ? weather?.current.temp_c
+                    : weather?.current.temp_f}
+                  °{tempUnit.toUpperCase()}
+                </Text>
 
-            {weather?.current.condition.icon && (
-              <img
-                src={`https:${weather.current.condition.icon}`}
-                alt={weather?.current.condition.text}
-              />
+                {weather?.current.condition.icon && (
+                  <img
+                    src={`https:${weather.current.condition.icon}`}
+                    alt={weather?.current.condition.text}
+                  />
+                )}
+              </>
             )}
           </Flex>
 
           <Box marginTop="large">
             <Accordion>
-              <CountryDetailsAccordionItem country={country} />
+              <AccordionItem title="Details">
+                <CountryDetailsContent country={country} />
+              </AccordionItem>
 
               <AccordionItem title="Weather details">
-                <div
-                  style={{
-                    height: 150,
-                  }}
-                />
+                <WeatherDetailsContent weather={weather} unit={tempUnit} />
               </AccordionItem>
             </Accordion>
           </Box>
@@ -114,7 +120,7 @@ const DetailItem = ({ label, value }: DetailItemProps) => {
   );
 };
 
-const CountryDetailsAccordionItem = ({
+const CountryDetailsContent = ({
   country,
 }: {
   country: Country | undefined;
@@ -122,41 +128,86 @@ const CountryDetailsAccordionItem = ({
   const { formatNumber } = useFormat();
 
   return (
-    <AccordionItem title="Details">
-      <Flex direction="column" gap="medium">
-        <DetailItem label="Region" value={country?.region} />
-        <DetailItem label="Subregion" value={country?.subregion} />
-        <DetailItem label="Capital" value={country?.capital} />
-        <DetailItem label="Location" value={country?.location} />
-        <DetailItem label="Phone Code" value={country?.phone_code} />
-        <DetailItem label="Currency" value={country?.currency} />
-        <DetailItem label="Currency name" value={country?.currency_name} />
-        <DetailItem label="Latitude" value={country?.latitude} />
-        <DetailItem label="Longitude" value={country?.longitude} />
-        <DetailItem label="Population" value={formatNumber(country?.numbers)} />
-        <DetailItem label="Area" value={formatNumber(country?.numbers6)} />
-        <DetailItem
-          label="Population density"
-          value={formatNumber(country?.numbers2)}
-        />
-        <DetailItem
-          label="Net migration"
-          value={formatNumber(country?.numbers0)}
-        />
-        <DetailItem
-          label="GDP ($ per capita)"
-          value={formatNumber(country?.numbers7)}
-        />
-        <DetailItem
-          label="Birth rate"
-          value={formatNumber(country?.numbers9)}
-        />
-        <DetailItem
-          label="Death rate"
-          value={formatNumber(country?.numbers8)}
-        />
-      </Flex>
-    </AccordionItem>
+    <Flex direction="column" gap="medium">
+      <DetailItem label="Region" value={country?.region} />
+      <DetailItem label="Subregion" value={country?.subregion} />
+      <DetailItem label="Capital" value={country?.capital} />
+      <DetailItem label="Location" value={country?.location} />
+      <DetailItem label="Phone Code" value={country?.phone_code} />
+      <DetailItem label="Currency" value={country?.currency} />
+      <DetailItem label="Currency name" value={country?.currency_name} />
+      <DetailItem label="Latitude" value={country?.latitude} />
+      <DetailItem label="Longitude" value={country?.longitude} />
+      <DetailItem label="Population" value={formatNumber(country?.numbers)} />
+      <DetailItem label="Area" value={formatNumber(country?.numbers6)} />
+      <DetailItem
+        label="Population density"
+        value={formatNumber(country?.numbers2)}
+      />
+      <DetailItem
+        label="Net migration"
+        value={formatNumber(country?.numbers0)}
+      />
+      <DetailItem
+        label="GDP ($ per capita)"
+        value={formatNumber(country?.numbers7)}
+      />
+      <DetailItem label="Birth rate" value={formatNumber(country?.numbers9)} />
+      <DetailItem label="Death rate" value={formatNumber(country?.numbers8)} />
+    </Flex>
+  );
+};
+
+type WeatherDetailsContentProps = {
+  weather: CurrentWeather | undefined;
+  unit: TemperatureUnit;
+};
+
+const WeatherDetailsContent = ({
+  weather,
+  unit,
+}: WeatherDetailsContentProps) => {
+  const { formatTemperature } = useFormat();
+
+  if (!weather) {
+    return <Text type="text1">No weather data available</Text>;
+  }
+
+  return (
+    <Flex direction="column" gap="medium">
+      <DetailItem
+        label="Last updated"
+        value={dayjs
+          .unix(weather.current.last_updated_epoch)
+          .format('DD/MM/YYYY HH:mm')}
+      />
+      <DetailItem
+        label="Temperature"
+        value={formatTemperature(
+          unit === 'c' ? weather.current.temp_c : weather.current.temp_f,
+          unit
+        )}
+      />
+      <DetailItem
+        label="Feels like"
+        value={formatTemperature(
+          unit === 'c'
+            ? weather.current.feelslike_c
+            : weather.current.feelslike_f,
+          unit
+        )}
+      />
+      <DetailItem label="Condition" value={weather.current.condition.text} />
+      <DetailItem
+        label="Wind speed kph"
+        value={weather.current.wind_kph + ' kph'}
+      />
+      <DetailItem
+        label="Wind speed mph"
+        value={weather.current.wind_mph + ' mph'}
+      />
+      <DetailItem label="Humidity" value={`${weather.current.humidity}%`} />
+    </Flex>
   );
 };
 
