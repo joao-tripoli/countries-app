@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import mondaySdk from 'monday-sdk-js';
 
+import { useContext } from 'react';
 import useFlatItems from '../../hooks/useFlatItems';
+import { ToastContext } from '../../providers/ToastContext';
 
 const monday = mondaySdk();
 
 const useFetchCountries = (filter: string) => {
   const { flattenItems } = useFlatItems();
+  const { showError } = useContext(ToastContext);
 
   return useQuery<Country[]>({
     queryKey: ['countries', filter],
@@ -30,14 +33,20 @@ const useFetchCountries = (filter: string) => {
         }
       `;
 
-      const res = await monday.api(query);
-      const items = res.data.boards[0].items_page.items as Item[];
+      try {
+        const res = await monday.api(query);
 
-      if (!items) return [];
+        const items = res.data.boards[0].items_page.items as Item[];
 
-      const flatItems = flattenItems(items);
+        if (!items) return [];
 
-      return flatItems as Country[];
+        const flatItems = flattenItems(items);
+
+        return flatItems as Country[];
+      } catch (error) {
+        showError('Failed to fetch countries. Please try again later.');
+        throw error;
+      }
     },
   });
 };

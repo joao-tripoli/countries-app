@@ -1,4 +1,5 @@
 import { Box, Flex, Heading, Search } from '@vibe/core';
+
 import CountriesTable from './components/CountriesTable';
 import CountryDetailsModal from './components/CountryDetailsModal';
 import useCountriesPage from './hooks/useCountriesPage';
@@ -9,6 +10,7 @@ const CountriesPage = () => {
     selectedCountry,
     filteredData,
     isLoading,
+    error,
     handleRowClick,
     setSelectedCountry,
     setSearchValue,
@@ -37,6 +39,7 @@ const CountriesPage = () => {
       <CountriesTable
         data={filteredData}
         isLoading={isLoading}
+        isError={Boolean(error)}
         handleRowClick={handleRowClick}
       />
 

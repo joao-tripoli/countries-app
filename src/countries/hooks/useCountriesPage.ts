@@ -6,7 +6,7 @@ const useCountriesPage = () => {
   const [selectedCountry, setSelectedCountry] = useState<Country | undefined>();
   const [searchValue, setSearchValue] = useState('');
 
-  const { data, isLoading } = useFetchCountries('');
+  const { data, isLoading, error } = useFetchCountries('');
 
   const filteredData = useMemo(() => {
     if (!searchValue) return data ?? [];
@@ -35,6 +35,7 @@ const useCountriesPage = () => {
     setSearchValue,
     handleRowClick,
     setSelectedCountry,
+    error,
   };
 };
 

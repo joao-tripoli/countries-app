@@ -1,5 +1,6 @@
 import {
   Box,
+  Heading,
   Table,
   TableBody,
   TableCell,
@@ -102,37 +103,35 @@ const columns: TableColumn[] = [
 type Props = {
   data: Country[];
   isLoading: boolean;
+  isError: boolean;
   handleRowClick: (row: Country) => void;
 };
 
 const CountriesTable = (props: Props) => {
-  const { data, isLoading, handleRowClick } = props;
+  const { data, isLoading, isError, handleRowClick } = props;
 
   return (
     <Box paddingTop="medium">
       <Table
-        errorState={
-          <h1
-            style={{
-              textAlign: 'center',
-            }}
-          >
-            Error State
-          </h1>
-        }
-        emptyState={
-          <h1
-            style={{
-              textAlign: 'center',
-            }}
-          >
-            Empty State
-          </h1>
-        }
         columns={columns}
         dataState={{
           isLoading,
+          isError,
         }}
+        errorState={
+          <Box padding="large">
+            <Heading type="h3" align="center">
+              An error occurred while loading the data
+            </Heading>
+          </Box>
+        }
+        emptyState={
+          <Box padding="large">
+            <Heading type="h3" align="center">
+              No records found
+            </Heading>
+          </Box>
+        }
       >
         <TableHeader>
           {columns.map((headerCell, index) => (
