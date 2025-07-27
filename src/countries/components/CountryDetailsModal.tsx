@@ -15,6 +15,7 @@ import {
 } from '@vibe/core/next';
 import { useState } from 'react';
 
+import useFormat from '../../hooks/useFormat';
 import { useWeather } from '../hooks/useFetchCountryWeather';
 
 type Props = Omit<ModalProps, 'children' | 'id'> & {
@@ -27,6 +28,7 @@ const CountryDetailsModal = (props: Props) => {
   const [tempUnit, setTempUnit] = useState<'c' | 'f'>('c');
 
   const { data: weather } = useWeather(country?.name ?? '');
+  const { formatNumber } = useFormat();
 
   return (
     <Modal id="weather-modal" size="medium" {...modalProps}>
@@ -41,6 +43,7 @@ const CountryDetailsModal = (props: Props) => {
         <ModalContent>
           <Flex justify="end">
             <ButtonGroup
+              value={tempUnit}
               onSelect={(value) => setTempUnit(value as 'c' | 'f')}
               options={[
                 {
@@ -52,7 +55,6 @@ const CountryDetailsModal = (props: Props) => {
                   value: 'f',
                 },
               ]}
-              value={1}
             />
           </Flex>
 
@@ -95,27 +97,32 @@ const CountryDetailsModal = (props: Props) => {
                   <DetailItem label="Longitude" value={country?.longitude} />
                   <DetailItem
                     label="Population"
-                    value={new Intl.NumberFormat('en-US').format(
-                      country?.numbers ?? 0
-                    )}
+                    value={formatNumber(country?.numbers)}
                   />
                   <DetailItem
                     label="Area"
-                    value={new Intl.NumberFormat('en-US').format(
-                      country?.numbers6 ?? 0
-                    )}
+                    value={formatNumber(country?.numbers6)}
                   />
                   <DetailItem
                     label="Population density"
-                    value={country?.numbers2}
+                    value={formatNumber(country?.numbers2)}
                   />
-                  <DetailItem label="Net migration" value={country?.numbers0} />
+                  <DetailItem
+                    label="Net migration"
+                    value={formatNumber(country?.numbers0)}
+                  />
                   <DetailItem
                     label="GDP ($ per capita)"
-                    value={country?.numbers7}
+                    value={formatNumber(country?.numbers7)}
                   />
-                  <DetailItem label="Birth rate" value={country?.numbers9} />
-                  <DetailItem label="Death rate" value={country?.numbers8} />
+                  <DetailItem
+                    label="Birth rate"
+                    value={formatNumber(country?.numbers9)}
+                  />
+                  <DetailItem
+                    label="Death rate"
+                    value={formatNumber(country?.numbers8)}
+                  />
                 </Flex>
               </AccordionItem>
 

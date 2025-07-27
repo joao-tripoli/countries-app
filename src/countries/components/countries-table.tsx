@@ -12,6 +12,8 @@ import {
   TableRow,
 } from '@vibe/core';
 import { useMemo, useState } from 'react';
+
+import useFormat from '../../hooks/useFormat';
 import useFetchCountries from '../hooks/useFetchCountries';
 import CountryDetailsModal from './CountryDetailsModal';
 
@@ -108,6 +110,7 @@ const CountriesTable = () => {
   const [searchValue, setSearchValue] = useState('');
 
   const { data, isLoading } = useFetchCountries('');
+  const { formatNumber } = useFormat();
 
   const filteredData = useMemo(() => {
     if (!searchValue) return data;
@@ -199,15 +202,15 @@ const CountriesTable = () => {
                   <TableCell>{rowItem.phone_code}</TableCell>
                   <TableCell>{rowItem.currency}</TableCell>
                   <TableCell>{rowItem.currency_name}</TableCell>
-                  <TableCell>{rowItem.latitude}</TableCell>
-                  <TableCell>{rowItem.longitude}</TableCell>
-                  <TableCell>{rowItem.numbers}</TableCell>
-                  <TableCell>{rowItem.numbers6}</TableCell>
-                  <TableCell>{rowItem.numbers2}</TableCell>
-                  <TableCell>{rowItem.numbers0}</TableCell>
-                  <TableCell>{rowItem.numbers7}</TableCell>
-                  <TableCell>{rowItem.numbers9}</TableCell>
-                  <TableCell>{rowItem.numbers9}</TableCell>
+                  <TableCell>{formatNumber(rowItem.latitude)}</TableCell>
+                  <TableCell>{formatNumber(rowItem.longitude)}</TableCell>
+                  <TableCell>{formatNumber(rowItem.numbers)}</TableCell>
+                  <TableCell>{formatNumber(rowItem.numbers6)}</TableCell>
+                  <TableCell>{formatNumber(rowItem.numbers2)}</TableCell>
+                  <TableCell>{formatNumber(rowItem.numbers0)}</TableCell>
+                  <TableCell>{formatNumber(rowItem.numbers7)}</TableCell>
+                  <TableCell>{formatNumber(rowItem.numbers9)}</TableCell>
+                  <TableCell>{formatNumber(rowItem.numbers9)}</TableCell>
                 </TableRow>
               </div>
             ))}

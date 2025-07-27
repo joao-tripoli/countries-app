@@ -5,7 +5,6 @@ const useFlatItems = () => {
     return items.map((item: Item) => {
       const { id, name, column_values } = item;
 
-      // Convert each column value to a property on the object
       const columnAttrs = column_values.reduce(
         (acc: Record<string, string>, cv: { id: string; text: string }) => {
           acc[cv.id] = cv.text;

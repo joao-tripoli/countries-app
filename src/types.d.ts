@@ -20,12 +20,19 @@ declare type Country = {
   timezones: string;
   latitude: number;
   longitude: number;
+  /** Population */
   numbers: number;
+  /** Area */
   numbers6: number;
+  /** Population density */
   numbers2: number;
+  /** Net migration */
   numbers0: number;
+  /** GDP ($ per capita) */
   numbers7: number;
+  /** Birth rate */
   numbers9: number;
+  /** Death rate */
   numbers8: number;
 };
 

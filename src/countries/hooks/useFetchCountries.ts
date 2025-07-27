@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import mondaySdk from 'monday-sdk-js';
+
 import useFlatItems from '../../hooks/useFlatItems';
 
 const monday = mondaySdk();
@@ -13,30 +14,7 @@ const useFetchCountries = (filter: string) => {
       const query = `
         query {
           boards(ids: 9671493720) {
-            items_page(limit: 500${
-              filter.length
-                ? `, query_params: {
-                      operator: or,
-                        rules: [
-                        {
-                          column_id: "name",
-                          operator: contains_text,
-                          compare_value: ["${filter}"]
-                        },
-                        {
-                          column_id: "region",
-                          operator: contains_terms,
-                          compare_value: ["${filter}"]
-                        },
-                        {
-                          column_id: "subregion",
-                          operator: contains_terms,
-                          compare_value: ["${filter}"]
-                        },
-                        ]
-                      }`
-                : ''
-            }) {
+            items_page(limit: 500) {
               cursor
               items {
                 id
