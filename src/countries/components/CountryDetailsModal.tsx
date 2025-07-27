@@ -42,49 +42,12 @@ const CountryDetailsModal = (props: Props) => {
         />
 
         <ModalContent>
-          <Flex justify="end">
-            <ButtonGroup
-              value={tempUnit}
-              onSelect={(value) => setTempUnit(value as TemperatureUnit)}
-              options={[
-                {
-                  text: '°C',
-                  value: 'c',
-                },
-                {
-                  text: '°F',
-                  value: 'f',
-                },
-              ]}
-            />
-          </Flex>
-
-          <Flex align="center" justify="center">
-            {isLoading ? (
-              <Skeleton width={200} height={64} />
-            ) : (
-              <>
-                <Text
-                  align="inherit"
-                  element="p"
-                  weight="bold"
-                  style={{ fontSize: '4rem' }}
-                >
-                  {tempUnit === 'c'
-                    ? weather?.current.temp_c
-                    : weather?.current.temp_f}
-                  °{tempUnit.toUpperCase()}
-                </Text>
-
-                {weather?.current.condition.icon && (
-                  <img
-                    src={`https:${weather.current.condition.icon}`}
-                    alt={weather?.current.condition.text}
-                  />
-                )}
-              </>
-            )}
-          </Flex>
+          <WeatherInfo
+            weather={weather}
+            isLoading={isLoading}
+            tempUnit={tempUnit}
+            setTempUnit={setTempUnit}
+          />
 
           <Box marginTop="large">
             <Accordion>
@@ -100,6 +63,65 @@ const CountryDetailsModal = (props: Props) => {
         </ModalContent>
       </ModalBasicLayout>
     </Modal>
+  );
+};
+
+type WeatherInfoProps = {
+  weather: CurrentWeather | undefined;
+  isLoading: boolean;
+  tempUnit: TemperatureUnit;
+  setTempUnit: (unit: TemperatureUnit) => void;
+};
+
+const WeatherInfo = (props: WeatherInfoProps) => {
+  const { weather, isLoading, tempUnit, setTempUnit } = props;
+
+  return (
+    <>
+      <Flex justify="end">
+        <ButtonGroup
+          value={tempUnit}
+          onSelect={(value) => setTempUnit(value as TemperatureUnit)}
+          options={[
+            {
+              text: '°C',
+              value: 'c',
+            },
+            {
+              text: '°F',
+              value: 'f',
+            },
+          ]}
+        />
+      </Flex>
+
+      <Flex align="center" justify="center">
+        {isLoading ? (
+          <Skeleton width={200} height={64} />
+        ) : (
+          <>
+            <Text
+              align="inherit"
+              element="p"
+              weight="bold"
+              style={{ fontSize: '4rem' }}
+            >
+              {tempUnit === 'c'
+                ? weather?.current.temp_c
+                : weather?.current.temp_f}
+              °{tempUnit.toUpperCase()}
+            </Text>
+
+            {weather?.current.condition.icon && (
+              <img
+                src={`https:${weather.current.condition.icon}`}
+                alt={weather?.current.condition.text}
+              />
+            )}
+          </>
+        )}
+      </Flex>
+    </>
   );
 };
 
