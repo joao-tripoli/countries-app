@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@vibe/core';
 
-import useFormat from '../../hooks/useFormat';
+import format from '../../utils/format';
 
 const columns: TableColumn[] = [
   {
@@ -108,14 +108,9 @@ type Props = {
 const CountriesTable = (props: Props) => {
   const { data, isLoading, handleRowClick } = props;
 
-  const { formatNumber } = useFormat();
-
   return (
     <Box paddingTop="medium">
       <Table
-        style={{
-          backgroundColor: 'red',
-        }}
         errorState={
           <h1
             style={{
@@ -161,15 +156,15 @@ const CountriesTable = (props: Props) => {
                 <TableCell>{rowItem.phone_code}</TableCell>
                 <TableCell>{rowItem.currency}</TableCell>
                 <TableCell>{rowItem.currency_name}</TableCell>
-                <TableCell>{formatNumber(rowItem.latitude)}</TableCell>
-                <TableCell>{formatNumber(rowItem.longitude)}</TableCell>
-                <TableCell>{formatNumber(rowItem.numbers)}</TableCell>
-                <TableCell>{formatNumber(rowItem.numbers6)}</TableCell>
-                <TableCell>{formatNumber(rowItem.numbers2)}</TableCell>
-                <TableCell>{formatNumber(rowItem.numbers0)}</TableCell>
-                <TableCell>{formatNumber(rowItem.numbers7)}</TableCell>
-                <TableCell>{formatNumber(rowItem.numbers9)}</TableCell>
-                <TableCell>{formatNumber(rowItem.numbers9)}</TableCell>
+                <TableCell>{format.number(rowItem.latitude)}</TableCell>
+                <TableCell>{format.number(rowItem.longitude)}</TableCell>
+                <TableCell>{format.number(rowItem.numbers)}</TableCell>
+                <TableCell>{format.number(rowItem.numbers6)}</TableCell>
+                <TableCell>{format.number(rowItem.numbers2)}</TableCell>
+                <TableCell>{format.number(rowItem.numbers0)}</TableCell>
+                <TableCell>{format.number(rowItem.numbers7)}</TableCell>
+                <TableCell>{format.number(rowItem.numbers9)}</TableCell>
+                <TableCell>{format.number(rowItem.numbers9)}</TableCell>
               </TableRow>
             </div>
           ))}

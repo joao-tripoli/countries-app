@@ -17,7 +17,7 @@ import {
 import { useState } from 'react';
 
 import dayjs from 'dayjs';
-import useFormat from '../../hooks/useFormat';
+import format from '../../utils/format';
 import { useWeather } from '../hooks/useFetchCountryWeather';
 
 type Props = Omit<ModalProps, 'children' | 'id'> & {
@@ -142,13 +142,11 @@ const DetailItem = ({ label, value }: DetailItemProps) => {
   );
 };
 
-const CountryDetailsContent = ({
-  country,
-}: {
+type CountryDetailsContentProps = {
   country: Country | undefined;
-}) => {
-  const { formatNumber } = useFormat();
+};
 
+const CountryDetailsContent = ({ country }: CountryDetailsContentProps) => {
   return (
     <Flex direction="column" gap="medium">
       <DetailItem label="Region" value={country?.region} />
@@ -160,22 +158,22 @@ const CountryDetailsContent = ({
       <DetailItem label="Currency name" value={country?.currency_name} />
       <DetailItem label="Latitude" value={country?.latitude} />
       <DetailItem label="Longitude" value={country?.longitude} />
-      <DetailItem label="Population" value={formatNumber(country?.numbers)} />
-      <DetailItem label="Area" value={formatNumber(country?.numbers6)} />
+      <DetailItem label="Population" value={format.number(country?.numbers)} />
+      <DetailItem label="Area" value={format.number(country?.numbers6)} />
       <DetailItem
         label="Population density"
-        value={formatNumber(country?.numbers2)}
+        value={format.number(country?.numbers2)}
       />
       <DetailItem
         label="Net migration"
-        value={formatNumber(country?.numbers0)}
+        value={format.number(country?.numbers0)}
       />
       <DetailItem
         label="GDP ($ per capita)"
-        value={formatNumber(country?.numbers7)}
+        value={format.number(country?.numbers7)}
       />
-      <DetailItem label="Birth rate" value={formatNumber(country?.numbers9)} />
-      <DetailItem label="Death rate" value={formatNumber(country?.numbers8)} />
+      <DetailItem label="Birth rate" value={format.number(country?.numbers9)} />
+      <DetailItem label="Death rate" value={format.number(country?.numbers8)} />
     </Flex>
   );
 };
@@ -189,8 +187,6 @@ const WeatherDetailsContent = ({
   weather,
   unit,
 }: WeatherDetailsContentProps) => {
-  const { formatTemperature } = useFormat();
-
   if (!weather) {
     return <Text type="text1">No weather data available</Text>;
   }
@@ -205,14 +201,14 @@ const WeatherDetailsContent = ({
       />
       <DetailItem
         label="Temperature"
-        value={formatTemperature(
+        value={format.temperature(
           unit === 'c' ? weather.current.temp_c : weather.current.temp_f,
           unit
         )}
       />
       <DetailItem
         label="Feels like"
-        value={formatTemperature(
+        value={format.temperature(
           unit === 'c'
             ? weather.current.feelslike_c
             : weather.current.feelslike_f,
