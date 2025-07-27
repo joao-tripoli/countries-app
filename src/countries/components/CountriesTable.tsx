@@ -1,8 +1,5 @@
 import {
   Box,
-  Flex,
-  Heading,
-  Search,
   Table,
   TableBody,
   TableCell,
@@ -11,11 +8,8 @@ import {
   TableHeaderCell,
   TableRow,
 } from '@vibe/core';
-import { useMemo, useState } from 'react';
 
 import useFormat from '../../hooks/useFormat';
-import useFetchCountries from '../hooks/useFetchCountries';
-import CountryDetailsModal from './CountryDetailsModal';
 
 const columns: TableColumn[] = [
   {
@@ -105,125 +99,85 @@ const columns: TableColumn[] = [
   },
 ];
 
-const CountriesTable = () => {
-  const [selectedCountry, setSelectedCountry] = useState<Country | undefined>();
-  const [searchValue, setSearchValue] = useState('');
+type Props = {
+  data: Country[];
+  isLoading: boolean;
+  handleRowClick: (row: Country) => void;
+};
 
-  const { data, isLoading } = useFetchCountries('');
+const CountriesTable = (props: Props) => {
+  const { data, isLoading, handleRowClick } = props;
+
   const { formatNumber } = useFormat();
 
-  const filteredData = useMemo(() => {
-    if (!searchValue) return data;
-
-    const query = searchValue.toLowerCase();
-
-    return (
-      data?.filter((row) =>
-        Object.values(row).some((value) =>
-          String(value).toLowerCase().includes(query)
-        )
-      ) ?? []
-    );
-  }, [data, searchValue]);
-
-  const handleRowClick = (row: Country) => {
-    setSelectedCountry(row);
-  };
-
   return (
-    <>
-      <Flex align="center" justify="space-between">
-        <Heading>Monday.com App</Heading>
-
-        <Box
-          style={{
-            width: '100%',
-            maxWidth: '16rem',
-          }}
-        >
-          <Search
-            size="small"
-            placeholder="Search"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e)}
-          />
-        </Box>
-      </Flex>
-
-      <Box
-        style={{
-          backgroundColor: 'var(--surface-secondary)',
-          paddingTop: 'var(--spacing-medium)',
+    <Box
+      style={{
+        backgroundColor: 'var(--surface-secondary)',
+        paddingTop: 'var(--spacing-medium)',
+      }}
+    >
+      <Table
+        errorState={
+          <h1
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            Error State
+          </h1>
+        }
+        emptyState={
+          <h1
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            Empty State
+          </h1>
+        }
+        columns={columns}
+        dataState={{
+          isLoading,
         }}
       >
-        <Table
-          errorState={
-            <h1
-              style={{
-                textAlign: 'center',
-              }}
-            >
-              Error State
-            </h1>
-          }
-          emptyState={
-            <h1
-              style={{
-                textAlign: 'center',
-              }}
-            >
-              Empty State
-            </h1>
-          }
-          columns={columns}
-          dataState={{
-            isLoading,
-          }}
-        >
-          <TableHeader>
-            {columns.map((headerCell, index) => (
-              <TableHeaderCell key={index} title={headerCell.title} />
-            ))}
-          </TableHeader>
+        <TableHeader>
+          {columns.map((headerCell, index) => (
+            <TableHeaderCell key={index} title={headerCell.title} />
+          ))}
+        </TableHeader>
 
-          <TableBody>
-            {filteredData?.map((rowItem) => (
-              <div
-                onClick={() => handleRowClick(rowItem)}
-                key={rowItem.id}
-                style={{ cursor: 'pointer' }}
-              >
-                <TableRow key={rowItem.id}>
-                  <TableCell>{rowItem.name}</TableCell>
-                  <TableCell>{rowItem.region}</TableCell>
-                  <TableCell>{rowItem.subregion}</TableCell>
-                  <TableCell>{rowItem.capital}</TableCell>
-                  <TableCell>{rowItem.location}</TableCell>
-                  <TableCell>{rowItem.phone_code}</TableCell>
-                  <TableCell>{rowItem.currency}</TableCell>
-                  <TableCell>{rowItem.currency_name}</TableCell>
-                  <TableCell>{formatNumber(rowItem.latitude)}</TableCell>
-                  <TableCell>{formatNumber(rowItem.longitude)}</TableCell>
-                  <TableCell>{formatNumber(rowItem.numbers)}</TableCell>
-                  <TableCell>{formatNumber(rowItem.numbers6)}</TableCell>
-                  <TableCell>{formatNumber(rowItem.numbers2)}</TableCell>
-                  <TableCell>{formatNumber(rowItem.numbers0)}</TableCell>
-                  <TableCell>{formatNumber(rowItem.numbers7)}</TableCell>
-                  <TableCell>{formatNumber(rowItem.numbers9)}</TableCell>
-                  <TableCell>{formatNumber(rowItem.numbers9)}</TableCell>
-                </TableRow>
-              </div>
-            ))}
-          </TableBody>
-        </Table>
-
-        <CountryDetailsModal
-          show={Boolean(selectedCountry)}
-          onClose={() => setSelectedCountry(undefined)}
-          country={selectedCountry}
-        />
-      </Box>
-    </>
+        <TableBody>
+          {data.map((rowItem) => (
+            <div
+              onClick={() => handleRowClick(rowItem)}
+              key={rowItem.id}
+              style={{ cursor: 'pointer' }}
+            >
+              <TableRow key={rowItem.id}>
+                <TableCell>{rowItem.name}</TableCell>
+                <TableCell>{rowItem.region}</TableCell>
+                <TableCell>{rowItem.subregion}</TableCell>
+                <TableCell>{rowItem.capital}</TableCell>
+                <TableCell>{rowItem.location}</TableCell>
+                <TableCell>{rowItem.phone_code}</TableCell>
+                <TableCell>{rowItem.currency}</TableCell>
+                <TableCell>{rowItem.currency_name}</TableCell>
+                <TableCell>{formatNumber(rowItem.latitude)}</TableCell>
+                <TableCell>{formatNumber(rowItem.longitude)}</TableCell>
+                <TableCell>{formatNumber(rowItem.numbers)}</TableCell>
+                <TableCell>{formatNumber(rowItem.numbers6)}</TableCell>
+                <TableCell>{formatNumber(rowItem.numbers2)}</TableCell>
+                <TableCell>{formatNumber(rowItem.numbers0)}</TableCell>
+                <TableCell>{formatNumber(rowItem.numbers7)}</TableCell>
+                <TableCell>{formatNumber(rowItem.numbers9)}</TableCell>
+                <TableCell>{formatNumber(rowItem.numbers9)}</TableCell>
+              </TableRow>
+            </div>
+          ))}
+        </TableBody>
+      </Table>
+    </Box>
   );
 };
 

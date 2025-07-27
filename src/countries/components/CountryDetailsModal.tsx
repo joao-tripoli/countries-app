@@ -28,7 +28,6 @@ const CountryDetailsModal = (props: Props) => {
   const [tempUnit, setTempUnit] = useState<'c' | 'f'>('c');
 
   const { data: weather } = useWeather(country?.name ?? '');
-  const { formatNumber } = useFormat();
 
   return (
     <Modal id="weather-modal" size="medium" {...modalProps}>
@@ -81,50 +80,7 @@ const CountryDetailsModal = (props: Props) => {
 
           <Box marginTop="large">
             <Accordion>
-              <AccordionItem title="Details">
-                <Flex direction="column" gap="medium">
-                  <DetailItem label="Region" value={country?.region} />
-                  <DetailItem label="Subregion" value={country?.subregion} />
-                  <DetailItem label="Capital" value={country?.capital} />
-                  <DetailItem label="Location" value={country?.location} />
-                  <DetailItem label="Phone Code" value={country?.phone_code} />
-                  <DetailItem label="Currency" value={country?.currency} />
-                  <DetailItem
-                    label="Currency name"
-                    value={country?.currency_name}
-                  />
-                  <DetailItem label="Latitude" value={country?.latitude} />
-                  <DetailItem label="Longitude" value={country?.longitude} />
-                  <DetailItem
-                    label="Population"
-                    value={formatNumber(country?.numbers)}
-                  />
-                  <DetailItem
-                    label="Area"
-                    value={formatNumber(country?.numbers6)}
-                  />
-                  <DetailItem
-                    label="Population density"
-                    value={formatNumber(country?.numbers2)}
-                  />
-                  <DetailItem
-                    label="Net migration"
-                    value={formatNumber(country?.numbers0)}
-                  />
-                  <DetailItem
-                    label="GDP ($ per capita)"
-                    value={formatNumber(country?.numbers7)}
-                  />
-                  <DetailItem
-                    label="Birth rate"
-                    value={formatNumber(country?.numbers9)}
-                  />
-                  <DetailItem
-                    label="Death rate"
-                    value={formatNumber(country?.numbers8)}
-                  />
-                </Flex>
-              </AccordionItem>
+              <CountryDetailsAccordionItem country={country} />
 
               <AccordionItem title="Weather details">
                 <div
@@ -155,6 +111,52 @@ const DetailItem = ({ label, value }: DetailItemProps) => {
 
       <Text type="text1">{value}</Text>
     </Flex>
+  );
+};
+
+const CountryDetailsAccordionItem = ({
+  country,
+}: {
+  country: Country | undefined;
+}) => {
+  const { formatNumber } = useFormat();
+
+  return (
+    <AccordionItem title="Details">
+      <Flex direction="column" gap="medium">
+        <DetailItem label="Region" value={country?.region} />
+        <DetailItem label="Subregion" value={country?.subregion} />
+        <DetailItem label="Capital" value={country?.capital} />
+        <DetailItem label="Location" value={country?.location} />
+        <DetailItem label="Phone Code" value={country?.phone_code} />
+        <DetailItem label="Currency" value={country?.currency} />
+        <DetailItem label="Currency name" value={country?.currency_name} />
+        <DetailItem label="Latitude" value={country?.latitude} />
+        <DetailItem label="Longitude" value={country?.longitude} />
+        <DetailItem label="Population" value={formatNumber(country?.numbers)} />
+        <DetailItem label="Area" value={formatNumber(country?.numbers6)} />
+        <DetailItem
+          label="Population density"
+          value={formatNumber(country?.numbers2)}
+        />
+        <DetailItem
+          label="Net migration"
+          value={formatNumber(country?.numbers0)}
+        />
+        <DetailItem
+          label="GDP ($ per capita)"
+          value={formatNumber(country?.numbers7)}
+        />
+        <DetailItem
+          label="Birth rate"
+          value={formatNumber(country?.numbers9)}
+        />
+        <DetailItem
+          label="Death rate"
+          value={formatNumber(country?.numbers8)}
+        />
+      </Flex>
+    </AccordionItem>
   );
 };
 
