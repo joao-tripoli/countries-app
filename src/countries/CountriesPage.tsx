@@ -17,7 +17,7 @@ const CountriesPage = () => {
   return (
     <Box style={{ padding: 'var(--spacing-large)' }}>
       <Flex align="center" justify="space-between">
-        <Heading>Monday.com App</Heading>
+        <Heading>Countries</Heading>
 
         <Box
           style={{

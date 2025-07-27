@@ -30,7 +30,7 @@ const columns: TableColumn[] = [
   {
     id: 'capital',
     title: 'Capital',
-    loadingStateType: 'medium-text',
+    loadingStateType: 'long-text',
   },
   {
     id: 'location',
@@ -50,7 +50,7 @@ const columns: TableColumn[] = [
   {
     id: 'currency_name',
     title: 'Currency name',
-    loadingStateType: 'medium-text',
+    loadingStateType: 'long-text',
   },
   {
     id: 'latitude',
@@ -70,7 +70,7 @@ const columns: TableColumn[] = [
   {
     id: 'numbers6',
     title: 'Area',
-    loadingStateType: 'medium-text',
+    loadingStateType: 'long-text',
   },
   {
     id: 'numbers2',
@@ -111,13 +111,11 @@ const CountriesTable = (props: Props) => {
   const { formatNumber } = useFormat();
 
   return (
-    <Box
-      style={{
-        backgroundColor: 'var(--surface-secondary)',
-        paddingTop: 'var(--spacing-medium)',
-      }}
-    >
+    <Box paddingTop="medium">
       <Table
+        style={{
+          backgroundColor: 'red',
+        }}
         errorState={
           <h1
             style={{
@@ -154,7 +152,7 @@ const CountriesTable = (props: Props) => {
               key={rowItem.id}
               style={{ cursor: 'pointer' }}
             >
-              <TableRow key={rowItem.id}>
+              <TableRow>
                 <TableCell>{rowItem.name}</TableCell>
                 <TableCell>{rowItem.region}</TableCell>
                 <TableCell>{rowItem.subregion}</TableCell>
