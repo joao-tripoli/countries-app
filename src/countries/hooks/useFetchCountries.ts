@@ -4,21 +4,8 @@ import useFlatItems from '../../hooks/useFlatItems';
 
 const monday = mondaySdk();
 
-// function buildQueryParams(columns: string[], search: string) {
-//   return {
-//     operator: 'or',
-//     rules: columns.map((columnId) => ({
-//       column_id: columnId,
-//       operator: 'contains_text',
-//       compare_value: [search],
-//     })),
-//   };
-// }
-
 const useFetchCountries = (filter: string) => {
   const { flattenItems } = useFlatItems();
-
-  // const queryParams = buildQueryParams(['name', 'region', 'subregion'], filter);
 
   return useQuery<Country[]>({
     queryKey: ['countries', filter],

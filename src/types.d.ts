@@ -20,6 +20,13 @@ declare type Country = {
   timezones: string;
   latitude: number;
   longitude: number;
+  numbers: number;
+  numbers6: number;
+  numbers2: number;
+  numbers0: number;
+  numbers7: number;
+  numbers9: number;
+  numbers8: number;
 };
 
 declare type CurrentWeather = {

@@ -11,9 +11,9 @@ import {
   TableHeaderCell,
   TableRow,
 } from '@vibe/core';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import useFetchCountries from '../hooks/useFetchCountries';
-import WeatherModal from './WeatherModal';
+import CountryDetailsModal from './CountryDetailsModal';
 
 const columns: TableColumn[] = [
   {
@@ -31,16 +31,100 @@ const columns: TableColumn[] = [
     title: 'Subregion',
     loadingStateType: 'long-text',
   },
+  {
+    id: 'capital',
+    title: 'Capital',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'location',
+    title: 'Location',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'phone_code',
+    title: 'Phone Code',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'currency',
+    title: 'Currency',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'currency_name',
+    title: 'Currency name',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'latitude',
+    title: 'Latitude',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'longitude',
+    title: 'Longitude',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'numbers',
+    title: 'Population',
+    loadingStateType: 'long-text',
+  },
+  {
+    id: 'numbers6',
+    title: 'Area',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'numbers2',
+    title: 'Population density',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'numbers0',
+    title: 'Net migration',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'numbers7',
+    title: 'GDP ($ per capita)',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'numbers9',
+    title: 'Birth rate',
+    loadingStateType: 'medium-text',
+  },
+  {
+    id: 'numbers8',
+    title: 'Death rate',
+    loadingStateType: 'medium-text',
+  },
 ];
 
 const CountriesTable = () => {
-  const [selectedCountryName, setSelectedCountryName] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState<Country | undefined>();
   const [searchValue, setSearchValue] = useState('');
 
-  const { data, isLoading } = useFetchCountries(searchValue);
+  const { data, isLoading } = useFetchCountries('');
+
+  const filteredData = useMemo(() => {
+    if (!searchValue) return data;
+
+    const query = searchValue.toLowerCase();
+
+    return (
+      data?.filter((row) =>
+        Object.values(row).some((value) =>
+          String(value).toLowerCase().includes(query)
+        )
+      ) ?? []
+    );
+  }, [data, searchValue]);
 
   const handleRowClick = (row: Country) => {
-    setSelectedCountryName(row.name);
+    setSelectedCountry(row);
   };
 
   return (
@@ -100,7 +184,7 @@ const CountriesTable = () => {
           </TableHeader>
 
           <TableBody>
-            {data?.map((rowItem) => (
+            {filteredData?.map((rowItem) => (
               <div
                 onClick={() => handleRowClick(rowItem)}
                 key={rowItem.id}
@@ -110,16 +194,30 @@ const CountriesTable = () => {
                   <TableCell>{rowItem.name}</TableCell>
                   <TableCell>{rowItem.region}</TableCell>
                   <TableCell>{rowItem.subregion}</TableCell>
+                  <TableCell>{rowItem.capital}</TableCell>
+                  <TableCell>{rowItem.location}</TableCell>
+                  <TableCell>{rowItem.phone_code}</TableCell>
+                  <TableCell>{rowItem.currency}</TableCell>
+                  <TableCell>{rowItem.currency_name}</TableCell>
+                  <TableCell>{rowItem.latitude}</TableCell>
+                  <TableCell>{rowItem.longitude}</TableCell>
+                  <TableCell>{rowItem.numbers}</TableCell>
+                  <TableCell>{rowItem.numbers6}</TableCell>
+                  <TableCell>{rowItem.numbers2}</TableCell>
+                  <TableCell>{rowItem.numbers0}</TableCell>
+                  <TableCell>{rowItem.numbers7}</TableCell>
+                  <TableCell>{rowItem.numbers9}</TableCell>
+                  <TableCell>{rowItem.numbers9}</TableCell>
                 </TableRow>
               </div>
             ))}
           </TableBody>
         </Table>
 
-        <WeatherModal
-          show={Boolean(selectedCountryName !== '')}
-          onClose={() => setSelectedCountryName('')}
-          location={selectedCountryName}
+        <CountryDetailsModal
+          show={Boolean(selectedCountry)}
+          onClose={() => setSelectedCountry(undefined)}
+          country={selectedCountry}
         />
       </Box>
     </>
