@@ -1,69 +1,60 @@
-# React + TypeScript + Vite
+# Countries App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is the front-end project for the Worktable's Full Stack Developer hiring test.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- List countries info form Monday.com
+- Filter countries list by any row info through a search bar
+- Display row data in a modal.
+- Fetch and display country's current weather data.
 
-## Expanding the ESLint configuration
+## 🚀 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Frontend:** React, Vite, TypeScript, Vibe Design System  
+**State Management:** React Context
+**Other Libraries:** TanStack Query, dayjs.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📦 Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Clone the project and install dependencies:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/joao-tripoli/countries-app.git
+cd countries-app
+pnpm i
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Start the development server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm dev
 ```
+
+## 📁 Folder Structure
+
+```
+src/
+├── context/        # App context (includes ToastContext for global toasts)
+├── pages/          # Application pages
+│   └── countries/  # All logic related to the countries page (components, hooks, etc.)
+├── hooks/          # Custom hooks
+├── providers/      # Wrappers that add functionality to the whole application
+├── utils/          # Reusable functions
+├── App.tsx
+├── types.d.ts      # Global types
+└── main.tsx
+```
+
+## 🔍 What I Focused On
+
+- Clean and readable code
+- Reusable and modular components
+- Proper error handling and loading states
+
+## 🙋‍♂️ About Me
+
+This project was built as part of a technical interview challenge.  
+If you have any questions or want to discuss it further, feel free to reach out:
+
+[João Matheus Tripoli] – [[LinkedIn](https://www.linkedin.com/in/joao-tripoli/)]
