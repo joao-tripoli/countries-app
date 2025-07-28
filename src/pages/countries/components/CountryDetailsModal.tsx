@@ -17,8 +17,8 @@ import {
 import { useState } from 'react';
 
 import dayjs from 'dayjs';
-import format from '../../utils/format';
-import { useWeather } from '../hooks/useFetchCountryWeather';
+import format from '../../../utils/format';
+import { useFetchCountryWeather } from '../hooks/useFetchCountryWeather';
 
 type Props = Omit<ModalProps, 'children' | 'id'> & {
   country: Country | undefined;
@@ -29,7 +29,9 @@ const CountryDetailsModal = (props: Props) => {
 
   const [tempUnit, setTempUnit] = useState<TemperatureUnit>('c');
 
-  const { data: weather, isLoading } = useWeather(country?.name ?? '');
+  const { data: weather, isLoading } = useFetchCountryWeather(
+    country?.name ?? ''
+  );
 
   return (
     <Modal id="weather-modal" size="large" {...modalProps}>

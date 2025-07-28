@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import mondaySdk from 'monday-sdk-js';
 
 import { useContext } from 'react';
-import useFlatItems from '../../hooks/useFlatItems';
-import { ToastContext } from '../../providers/ToastContext';
+import { ToastContext } from '../../../context/ToastContext';
+import useFlatItems from '../../../hooks/useFlatItems';
 
 const monday = mondaySdk();
 

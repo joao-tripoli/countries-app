@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetcher } from '../../utils/fetcher';
+import { fetcher } from '../../../utils/fetcher';
 
-export const useWeather = (location: string) => {
+export const useFetchCountryWeather = (location: string) => {
   return useQuery<CurrentWeather>({
     queryKey: ['weather', location],
     queryFn: () => fetcher(`weather/current/${location}`),

@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import CountriesPage from './countries/CountriesPage';
+import CountriesPage from './pages/countries';
 import ToastProvider from './providers/ToastProvider';
 
 const queryClient = new QueryClient();

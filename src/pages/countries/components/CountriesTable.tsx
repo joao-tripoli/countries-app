@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@vibe/core';
 
-import format from '../../utils/format';
+import format from '../../../utils/format';
 
 const columns: TableColumn[] = [
   {

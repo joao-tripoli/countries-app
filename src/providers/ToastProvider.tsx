@@ -1,6 +1,6 @@
 import { Toast, type ToastType } from '@vibe/core';
 import { useState, type ReactNode } from 'react';
-import { ToastContext } from './ToastContext';
+import { ToastContext } from '../context/ToastContext';
 
 const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
