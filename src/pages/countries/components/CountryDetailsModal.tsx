@@ -38,9 +38,7 @@ const CountryDetailsModal = (props: Props) => {
       <ModalBasicLayout>
         <ModalHeader
           title={country?.name}
-          description={
-            <Text type="text1">{weather?.current.condition.text}</Text>
-          }
+          description={<Text type="text1">{country?.region}</Text>}
         />
 
         <ModalContent>
@@ -78,6 +76,14 @@ type WeatherInfoProps = {
 const WeatherInfo = (props: WeatherInfoProps) => {
   const { weather, isLoading, tempUnit, setTempUnit } = props;
 
+  if (!weather?.current && !isLoading) {
+    return (
+      <Text type="text1" align="center">
+        No weather data available
+      </Text>
+    );
+  }
+
   return (
     <>
       <Flex justify="end">
@@ -109,12 +115,12 @@ const WeatherInfo = (props: WeatherInfoProps) => {
               style={{ fontSize: '4rem' }}
             >
               {tempUnit === 'c'
-                ? weather?.current.temp_c
-                : weather?.current.temp_f}
+                ? weather?.current?.temp_c
+                : weather?.current?.temp_f}
               °{tempUnit.toUpperCase()}
             </Text>
 
-            {weather?.current.condition.icon && (
+            {weather?.current?.condition.icon && (
               <img
                 src={`https:${weather.current.condition.icon}`}
                 alt={weather?.current.condition.text}
@@ -189,8 +195,12 @@ const WeatherDetailsContent = ({
   weather,
   unit,
 }: WeatherDetailsContentProps) => {
-  if (!weather) {
-    return <Text type="text1">No weather data available</Text>;
+  if (!weather?.current) {
+    return (
+      <Text type="text1" align="center">
+        No weather data available
+      </Text>
+    );
   }
 
   return (
