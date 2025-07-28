@@ -4,6 +4,7 @@ import {
   Box,
   ButtonGroup,
   Flex,
+  Heading,
   Skeleton,
   Text,
 } from '@vibe/core';
@@ -103,30 +104,40 @@ const WeatherInfo = (props: WeatherInfoProps) => {
         />
       </Flex>
 
-      <Flex align="center" justify="center">
-        {isLoading ? (
-          <Skeleton width={200} height={64} />
-        ) : (
-          <>
-            <Text
-              align="inherit"
-              element="p"
-              weight="bold"
-              style={{ fontSize: '4rem' }}
-            >
-              {tempUnit === 'c'
-                ? weather?.current?.temp_c
-                : weather?.current?.temp_f}
-              °{tempUnit.toUpperCase()}
-            </Text>
+      <Flex direction="column" gap="large" align="center">
+        <Flex align="center" justify="center">
+          {isLoading ? (
+            <Skeleton width={200} height={64} />
+          ) : (
+            <>
+              <Text
+                align="inherit"
+                element="p"
+                weight="bold"
+                style={{ fontSize: '4rem' }}
+              >
+                {tempUnit === 'c'
+                  ? weather?.current?.temp_c
+                  : weather?.current?.temp_f}
+                °{tempUnit.toUpperCase()}
+              </Text>
 
-            {weather?.current?.condition.icon && (
-              <img
-                src={`https:${weather.current.condition.icon}`}
-                alt={weather?.current.condition.text}
-              />
-            )}
-          </>
+              {weather?.current?.condition.icon && (
+                <img
+                  src={`https:${weather.current.condition.icon}`}
+                  alt={weather?.current.condition.text}
+                />
+              )}
+            </>
+          )}
+        </Flex>
+
+        {isLoading ? (
+          <Skeleton type="text" size="h2" />
+        ) : (
+          <Heading type="h2" align="center">
+            {weather?.current?.condition.text}
+          </Heading>
         )}
       </Flex>
     </>
