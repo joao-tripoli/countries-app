@@ -11,8 +11,8 @@ This project is the front-end project for the Worktable's Full Stack Developer h
 
 ## 🚀 Tech Stack
 
-**Frontend:** React, Vite, TypeScript, Vibe Design System  
-**State Management:** React Context
+**Frontend:** React, Vite, TypeScript, Vibe Design System.  
+**State Management:** React Context.  
 **Other Libraries:** TanStack Query, dayjs.
 
 ## 📦 Getting Started
@@ -57,4 +57,4 @@ src/
 This project was built as part of a technical interview challenge.  
 If you have any questions or want to discuss it further, feel free to reach out:
 
-[João Matheus Tripoli] – [[LinkedIn](https://www.linkedin.com/in/joao-tripoli/)]
+João Matheus Tripoli – [LinkedIn](https://www.linkedin.com/in/joao-tripoli/)
